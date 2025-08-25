@@ -5,6 +5,11 @@ import Layout from "./pages/Layout";
 import Dashboard from "./pages/Dashboard";
 import WriteArticle from "./pages/WriteArticle";
 import BlogTitle from "./pages/BlogTitle";
+import GenerateImages from "./pages/GenerateImages";
+import RemoveBackground from "./pages/RemoveBackground";
+import RemoveObject from "./pages/RemoveObject";
+import ReviewResume from "./pages/ReviewResume";
+import Community from "./pages/Community";
 
 const routes = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -23,6 +28,26 @@ const routes = createBrowserRouter([
       {
         path: "blog-titles",
         element: <BlogTitle />,
+      },
+      {
+        path: "generate-images",
+        element: <GenerateImages />,
+      },
+      {
+        path: "remove-bg",
+        element: <RemoveBackground />,
+      },
+      {
+        path: "remove-objects",
+        element: <RemoveObject />,
+      },
+      {
+        path: "review-resume",
+        element: <ReviewResume />,
+      },
+      {
+        path: "community",
+        element: <Community />,
       },
     ],
   },

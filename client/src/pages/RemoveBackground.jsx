@@ -1,6 +1,6 @@
 import React from "react";
 
-const RemoveBackground = () => {
+const    = () => {
   return <div>RemoveBackground</div>;
 };
 
