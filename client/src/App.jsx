@@ -34,11 +34,11 @@ const routes = createBrowserRouter([
         element: <GenerateImages />,
       },
       {
-        path: "remove-bg",
+        path: "remove-background",
         element: <RemoveBackground />,
       },
       {
-        path: "remove-objects",
+        path: "remove-object",
         element: <RemoveObject />,
       },
       {
