@@ -1,6 +1,7 @@
 import Hero from "../components/Hero";
 import AITools from "../components/AITools";
 import NavBar from "../components/NavBar";
+import Testimonial from "../components/Testimonial";
 
 const Home = () => {
   return (
@@ -8,6 +9,7 @@ const Home = () => {
       <NavBar />
       <Hero />
       <AITools />
+      <Testimonial />
     </>
   );
 };
