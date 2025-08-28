@@ -3,6 +3,7 @@ import AITools from "../components/AITools";
 import NavBar from "../components/NavBar";
 import Testimonial from "../components/Testimonial";
 import Plan from "../components/Plan";
+import Footer from "../components/Footer";
 
 const Home = () => {
   return (
@@ -12,6 +13,7 @@ const Home = () => {
       <AITools />
       <Testimonial />
       <Plan />
+      <Footer />
     </>
   );
 };
