@@ -10,7 +10,11 @@ const Sidebar = ({ sidebar, setSidebar }) => {
       } transition-all duration-300 ease-in-out`}
     >
       <div className="my-7 p-4">
-        <img src={user.imageUrl} alt="Logo" />
+        <img
+          src={user.imageUrl}
+          alt="Logo"
+          className="w-14 rounded-full mx-auto"
+        />
         <h1 className="mt-1 text-center">{user.fullName}</h1>
       </div>
     </div>
