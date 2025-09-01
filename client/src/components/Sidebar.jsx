@@ -1,10 +1,11 @@
-import { useClerk, useUser } from "@clerk/clerk-react";
+import { Protect, useClerk, useUser } from "@clerk/clerk-react";
 import {
   Eraser,
   FileText,
   Hash,
   House,
   Image,
+  LogOut,
   Scissors,
   SquarePen,
   Users,
@@ -70,7 +71,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
           className="w-14 rounded-full mx-auto"
         />
         <h1 className="mt-1 text-center">{user.fullName}</h1>
-        <div className="px-4 mt-5 text-sm text-gray-600 font-medium">
+        <div className="mt-5 text-sm text-gray-600 font-medium">
           {navItems.map(({ Icon, Label, to }) => (
             <NavLink
               key={to}
@@ -94,6 +95,28 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             </NavLink>
           ))}
         </div>
+      </div>
+      <div className="w-full border-t border-gray-200 p-4 px-7 flex items-center justify-between">
+        <div
+          className="flex gap-2 items-center cursor-pointer"
+          onClick={openUserProfile}
+        >
+          <img src={user.imageUrl} alt="Logo" className="w-8 rounded-full" />
+          <div>
+            <h1 className="text-sm font-medium text-gray-800">{user.fullName}</h1>
+            <p className="text-xs text-gray-500 font-medium">
+              <Protect plan="premium" fallback="free">
+                Premium
+              </Protect>{" "}
+              Plan
+            </p>
+          </div>
+        </div>
+
+        <LogOut
+          onClick={signOut}
+          className="w-4 to-gray-400 hover:text-gray-700 transition cursor-pointer"
+        />
       </div>
     </div>
   );
