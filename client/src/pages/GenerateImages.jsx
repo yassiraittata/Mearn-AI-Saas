@@ -2,7 +2,16 @@ import { Image, Sparkles } from "lucide-react";
 import React, { useState } from "react";
 
 const GenerateImages = () => {
-  const imageStyle = ["Realistic", "Ghibli"];
+  const imageStyle = [
+    "Realistic",
+    "Ghibli",
+    "Pixel",
+    "Cartoon",
+    "3D",
+    "Anime",
+    "Isometric",
+    "Portrait",
+  ];
 
   const [selectedImageStyle, setSelectedImageStyle] = useState(imageStyle[0]);
   const [input, setInput] = useState("");
@@ -41,7 +50,7 @@ const GenerateImages = () => {
               key={index}
               className={`text-xs px-4 py-1 border rounded-full cursor-pointer ${
                 selectedImageStyle === item
-                  ? "bg-purple-50 text-purple-700"
+                  ? "bg-green-50 text-green-700"
                   : "text-gray-500 border-gray-300"
               }`}
               onClick={() => setSelectedImageStyle(item)}
@@ -50,7 +59,20 @@ const GenerateImages = () => {
             </span>
           ))}
         </div>
-        <br />
+        <div className="my-6 flex items-center gap-2">
+          <label className="relative cursor-pointer">
+            <input
+              type="checkbox"
+              className="sr-only peer"
+              onChange={(e) => setPublish(e.target.value)}
+              checked={publish}
+            />
+            <div className="w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-500 transition"></div>
+            <span className="absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition peer-checked:translate-x-4"></span>
+          </label>
+          <p className="text-sm">Make thhis picture public</p>
+        </div>
+       
         <button className="w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#00AD25] to-[#04FF50] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer">
           <Image className="w-5" /> Generate Image
         </button>
