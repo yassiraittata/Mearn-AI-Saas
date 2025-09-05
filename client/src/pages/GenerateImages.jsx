@@ -64,7 +64,7 @@ const GenerateImages = () => {
             <input
               type="checkbox"
               className="sr-only peer"
-              onChange={(e) => setPublish(e.target.value)}
+              onChange={(e) => setPublish(e.target.checked)}
               checked={publish}
             />
             <div className="w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-500 transition"></div>
