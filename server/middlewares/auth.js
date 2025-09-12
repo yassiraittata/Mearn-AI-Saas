@@ -1,11 +1,13 @@
 import { clerkClient, getAuth } from "@clerk/express";
+import createError from "http-errors";
+import { FREE_PLAN, PREMIUM_PLAN } from "../utils/constants.js";
 
 // middleware to check userId and plans
 export const auth = async (req, res, next) => {
   try {
     const { userId, has } = getAuth(req);
     const hasPremiumPlan = await has({
-      plan: "premium",
+      plan: PREMIUM_PLAN,
     });
 
     const user = await clerkClient.users.getUser(userId);
@@ -21,12 +23,9 @@ export const auth = async (req, res, next) => {
       req.free_usage = 0;
     }
 
-    req.plan = hasPremiumPlan ? "premium" : "free";
+    req.plan = hasPremiumPlan ? PREMIUM_PLAN : FREE_PLAN;
     next();
   } catch (e) {
-    res.json({
-      success: false,
-      message: error.message,
-    });
+    next(createError(400, error.message));
   }
 };
