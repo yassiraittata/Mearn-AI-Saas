@@ -1,10 +1,12 @@
-import { requireAuth } from "@clerk/express";
-import { generateArticle } from "../controllers/aiController.js";
+import {
+  generateArticle,
+  generateBlogTitle,
+  generateImage,
+} from "../controllers/aiController.js";
 import { auth } from "../middlewares/auth.js";
 
 export default (router) => {
-//   router.use(requireAuth());
-  router.post("/generate-article", (req, res) =>
-    res.json({ message: " hello" })
-  );
+  router.post("/generate-article", auth, generateArticle);
+  router.post("/generate-blog-title", auth, generateBlogTitle);
+  router.post("/generate-image", auth, generateImage);
 };
