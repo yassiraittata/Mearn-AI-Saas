@@ -16,6 +16,8 @@ export const generateArticle = async (req, res) => {
   const plan = req.plan;
   const free_usage = req.free_usage;
 
+  console.log("prompt", prompt);
+
   if (plan != PREMIUM_PLAN && free_usage >= 10) {
     return next(createError(400, "Limit reached. Upgrade to continue"));
   }

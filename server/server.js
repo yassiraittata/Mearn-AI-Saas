@@ -1,8 +1,9 @@
 import express from "express";
-import { clerkMiddleware, requireAuth } from "@clerk/express";
-import cors from "cors";
 import "dotenv/config";
+import { clerkMiddleware, requireAuth,  } from "@clerk/express";
+import cors from "cors";
 import errorHandler from "./middlewares/errorHandler.js";
+import Router from "./routes/index.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,12 @@ app.use(
 app.use(express.json());
 app.use(clerkMiddleware());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to my application!");
+});
+
 app.use(requireAuth());
+app.use("/api/ai", Router());
 
 app.use(errorHandler);
 
