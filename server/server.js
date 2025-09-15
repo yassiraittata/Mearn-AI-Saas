@@ -1,12 +1,16 @@
 import express from "express";
 import "dotenv/config";
-import { clerkMiddleware, requireAuth,  } from "@clerk/express";
+import { clerkMiddleware, requireAuth } from "@clerk/express";
 import cors from "cors";
+
+import connectCloudinary from "./configs/cloudinary.js";
 import errorHandler from "./middlewares/errorHandler.js";
 import Router from "./routes/index.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+await connectCloudinary();
 
 app.use(
   cors({
