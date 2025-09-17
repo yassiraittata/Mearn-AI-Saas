@@ -129,3 +129,32 @@ export const generateImage = async (req, res) => {
 
   res.json({ success: true, content: secure_url });
 };
+
+export const removeImageBackground = async (req, res) => {
+  const { userId } = getAuth(req);
+  const { image } = req.file;
+  const plan = req.plan;
+
+  if (plan != PREMIUM_PLAN) {
+    return next(
+      createError(
+        400,
+        "This feature is only for available for premium subsciptions"
+      )
+    );
+  }
+
+
+  const { secure_url } = await cloudinary.uploader.upload(image.path, {
+    transformation: [
+      {
+        effect: "background_removal",
+        background_removal: "remove_the_background",
+      },
+    ],
+  });
+
+  await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, 'Remove background from image', ${secure_url}, 'image')`;
+
+  res.json({ success: true, content: secure_url });
+};
