@@ -144,7 +144,6 @@ export const removeImageBackground = async (req, res) => {
     );
   }
 
-
   const { secure_url } = await cloudinary.uploader.upload(image.path, {
     transformation: [
       {
@@ -157,4 +156,34 @@ export const removeImageBackground = async (req, res) => {
   await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, 'Remove background from image', ${secure_url}, 'image')`;
 
   res.json({ success: true, content: secure_url });
+};
+
+export const removeImageObject = async (req, res) => {
+  const { userId } = getAuth(req);
+  const { object } = req.body;
+  const { image } = req.file;
+  const plan = req.plan;
+
+  if (plan != PREMIUM_PLAN) {
+    return next(
+      createError(
+        400,
+        "This feature is only for available for premium subsciptions"
+      )
+    );
+  }
+
+  const { public_id } = await cloudinary.uploader.upload(image.path);
+  const imageUrl = cloudinary.url(public_id, {
+    transformation: [
+      {
+        effect: `gen_remove: ${object}`,
+      },
+    ],
+    resource_type: "image",
+  });
+
+  await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, ${`Remove ${object} from image`}, ${imageUrl}, 'image')`;
+
+  res.json({ success: true, content: imageUrl });
 };
