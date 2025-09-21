@@ -3,6 +3,8 @@ import createError from "http-errors";
 import { PREMIUM_PLAN } from "../utils/constants.js";
 import OpenAI from "openai";
 import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
+import pdf from "pdf-parse/lib/pdf.js";
 
 import sql from "../configs/db.js";
 import axios from "axios";
@@ -184,6 +186,48 @@ export const removeImageObject = async (req, res) => {
   });
 
   await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, ${`Remove ${object} from image`}, ${imageUrl}, 'image')`;
+
+  res.json({ success: true, content: imageUrl });
+};
+
+export const resumeReview = async (req, res) => {
+  const { userId } = getAuth(req);
+  const resume = req.file;
+  const plan = req.plan;
+
+  if (plan != PREMIUM_PLAN) {
+    return next(
+      createError(
+        400,
+        "This feature is only for available for premium subsciptions"
+      )
+    );
+  }
+
+  if (resume.size > 5 * 1024 * 1024) {
+    createError(400, "Resume file exceeds allow size (5MB)");
+  }
+
+  const dataBuffer = fs.readFileSync(resume.path);
+  const pdfData = await pdf(dataBuffer);
+
+  const prompt = `Review the following resume and provide constructive feedback on its strengths, weekness, and areas for improvement. Resume Content: \n\n${pdfData.text}`;
+
+  const response = await AI.chat.completions.create({
+    model: "gemini-2.0-flash",
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+    temperature: 0.7,
+    max_completion_tokens: 1000,
+  });
+
+  const content = response.choices[0].message.content;
+
+  await sql`INSERT INTO creations (user_id, prompt, content, type) VALUES(${userId}, ${prompt}, ${content}, 'resume-review')`;
 
   res.json({ success: true, content: imageUrl });
 };
