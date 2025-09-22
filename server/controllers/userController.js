@@ -10,3 +10,12 @@ export const getUserCeations = async (req, res) => {
 
   res.json({ success: true, creations });
 };
+
+export const getPublishedCeations = async (req, res) => {
+  const { userId } = getAuth(req);
+
+  const creations =
+    await sql`SELECT * FROM creations WHERE pubish = true ORDER BY created_at DESC`;
+
+  res.json({ success: true, creations });
+};
