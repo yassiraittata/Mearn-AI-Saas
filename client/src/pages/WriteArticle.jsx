@@ -1,5 +1,10 @@
+import { useState } from "react";
 import { Edit, Sparkles } from "lucide-react";
-import { use, useState } from "react";
+import axios from "axios";
+import { useAuth } from "@clerk/clerk-react";
+import toast from "react-hot-toast";
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const WriteArticle = () => {
   const articleLength = [
@@ -19,10 +24,40 @@ const WriteArticle = () => {
 
   const [selectedLength, setSelectedLength] = useState(articleLength[0]);
   const [input, setInput] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [content, setContent] = useState("");
+
+  const { getToken } = useAuth();
 
   const submithandler = async (e) => {
     e.preventDefault();
-    // handle form submission
+    try {
+      setLoading(true);
+      const prompt = `Write articel about ${input} in ${selectedLength.text}`;
+
+      const { data } = await axios.post(
+        "/api/ai/generate-article",
+        {
+          prompt,
+          length: selectedLength.length,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${await getToken()}`,
+          },
+        }
+      );
+
+      if (data?.success) {
+        setContent(data?.content);
+      } else {
+        toast.error("Something went wrong, please try again");
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+
+    setLoading(false);
   };
 
   return (

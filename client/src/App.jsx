@@ -10,8 +10,7 @@ import RemoveBackground from "./pages/RemoveBackground";
 import RemoveObject from "./pages/RemoveObject";
 import ReviewResume from "./pages/ReviewResume";
 import Community from "./pages/Community";
-import { useAuth } from "@clerk/clerk-react";
-import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 const routes = createBrowserRouter([
   { path: "/", element: <Home /> },
@@ -60,13 +59,18 @@ const routes = createBrowserRouter([
 ]);
 
 const App = () => {
-  const { getToken } = useAuth();
+  // const { getToken } = useAuth();
 
-  useEffect(() => {
-    getToken().then((token) => console.log(token));
-  }, [getToken]);
+  // useEffect(() => {
+  //   getToken().then((token) => console.log(token));
+  // }, [getToken]);
 
-  return <RouterProvider router={routes} />;
+  return (
+    <>
+      <Toaster />
+      <RouterProvider router={routes} />;
+    </>
+  );
 };
 
 export default App;

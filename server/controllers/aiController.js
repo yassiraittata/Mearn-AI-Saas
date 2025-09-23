@@ -4,7 +4,7 @@ import { PREMIUM_PLAN } from "../utils/constants.js";
 import OpenAI from "openai";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import pdf from "pdf-parse/lib/pdf.js";
+import pdf from "pdf-parse/lib/pdf-parse.js";
 
 import sql from "../configs/db.js";
 import axios from "axios";
@@ -50,7 +50,7 @@ export const generateArticle = async (req, res) => {
     });
   }
 
-  res.json({ success: true });
+  res.json({ success: true, content });
 };
 
 export const generateBlogTitle = async (req, res) => {
